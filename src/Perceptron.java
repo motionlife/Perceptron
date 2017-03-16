@@ -22,7 +22,7 @@ public class Perceptron {
     private static final String[] TEST_PATH = {"dataset/enron4/test/ham", "dataset/enron4/test/spam"};
 
     private static List<String> stop_words;
-    private static Map<String, Integer> dictionary;
+    private static Set<String> dictionary;
     private static double[] W;
     private static int[] numberOfTestFiles = {0, 0};
     private static double[] learningRates = new double[20];
@@ -64,7 +64,7 @@ public class Perceptron {
      * Record the frequency of each word in the given training text.
      */
     private static void countWords(String[] folders, boolean filter) {
-        dictionary = new LinkedHashMap<>();
+        dictionary = new LinkedHashSet<>();
         for (String folder : folders) {
             try (Stream<Path> paths = Files.walk(Paths.get(folder))) {
                 paths.forEach(filePath -> {
@@ -75,9 +75,7 @@ public class Perceptron {
                                 String[] words = line.split(" ");
                                 for (String word : words) {
                                     if (filter && stop_words.contains(word)) continue;
-                                    //put the word into dictionary and count the number of each word
-                                    int num = dictionary.containsKey(word) ? dictionary.get(word) + 1 : 1;
-                                    dictionary.put(word, num);
+                                    dictionary.add(word);
                                 }
                             }
                         } catch (IOException e) {
@@ -97,7 +95,7 @@ public class Perceptron {
      */
     private static ArrayList<TextVector> toVectors(String[] folders, boolean filter) {
         ArrayList<TextVector> vectors = new ArrayList<>();
-        List<String> word_list = new ArrayList<>(dictionary.keySet());
+        List<String> word_list = new ArrayList<>(dictionary);
         fillVector(folders, HAM, word_list, vectors, filter);
         fillVector(folders, SPAM, word_list, vectors, filter);
         return vectors;
