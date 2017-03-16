@@ -41,12 +41,12 @@ public class Perceptron {
 
     public static void main(String[] args) {
 
-        System.out.println("---------------Keep Original Words---------------");
+        System.out.println("==================Keep Original Words================");
         for (int i = 0; i < 20; i++) {
             output(learningRates[i], iterations[i], false);
         }
 
-        System.out.println("\n\n-----------Filtering Out The Stop Words----------");
+        System.out.println("\n\n============Filtering Out The Stop Words============");
         for (int i = 0; i < 20; i++) {
             output(learningRates[i], iterations[i], true);
         }
@@ -55,7 +55,7 @@ public class Perceptron {
     private static void output(double learningRate, int iteration, boolean filter) {
         countWords(TRAIN_PATH, filter);
         trainPerceptron(toVectors(TRAIN_PATH, filter), learningRate, iteration);
-        System.out.println("================================================");
+        System.out.println("--------------------------------------------------------------------------");
         System.out.println("learningRate = " + learningRate + ", iteration = " + iteration + " => Accuracy: " + testAccuracy(toVectors(TEST_PATH, filter)));
     }
 
